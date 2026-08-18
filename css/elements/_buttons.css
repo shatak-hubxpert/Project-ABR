@@ -73,7 +73,7 @@ button:disabled,
   width: 40px;
   height: calc(100% - 16px);
   background-color: #ffffff;
-  border-radius: calc(0.875em - 4px); 
+  border-radius: calc(0.875em - 4px);
   transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
   z-index: 1; /* Sets the white box as the base layer */
 }
@@ -90,7 +90,7 @@ button:disabled,
   
   /* Strict sizing so it never expands past the white box */
   width: 40px;
-  min-width: 40px; 
+  min-width: 40px;
   max-width: 40px;
   height: 40px;
   flex-shrink: 0; 
@@ -106,7 +106,7 @@ button:disabled,
   gap: 20px; /* Exact space between arrows */
   padding-left: 10px; /* Centers the visible arrow inside the 40px box */
   width: max-content;
-  animation: infinite-slide 2.5s linear infinite; 
+  animation: infinite-slide 2.5s linear infinite;
 }
 
 /* Base Icon styling */
@@ -120,7 +120,7 @@ button:disabled,
 /* Seamless Left-to-Right Keyframes */
 @keyframes infinite-slide {
   /* Shifts left by 40px (20px icon + 20px gap) */
-  0% { transform: translateX(-40px); } 
+  0% { transform: translateX(-40px); }
   100% { transform: translateX(0px); } 
 }
 
@@ -162,7 +162,7 @@ button:disabled,
 
 /* 2. Shift padding to keep the text centered */
 .p-btn:hover {
-  padding: 8px 24px 8px 32px; 
+  padding: 8px 24px 8px 32px;
   box-shadow: 0 4px 12px rgba(5, 82, 252, 0.1);
 }
 

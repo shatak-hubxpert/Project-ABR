@@ -190,6 +190,28 @@
     background: var(--gradient-3) !important;
   }
 
+  /* Keep the desktop header CTA more compact than the global button. */
+  .site-header .header-cta > .p-btn {
+    height: 46px;
+    max-height: 46px;
+    padding: 3px 32px 3px 8px;
+    font-size: 14px;
+  }
+
+  .site-header .header-cta > .p-btn .btn-bg-fill {
+    top: 3px;
+    height: calc(100% - 6px);
+  }
+
+  .site-header .header-cta > .p-btn:hover {
+    padding: 3px 24px 3px 32px;
+  }
+
+  .site-header .header-cta > .p-btn:hover .btn-bg-fill {
+    top: 2px;
+    height: calc(100% - 4px);
+  }
+
   /* Hide Mobile Elements on Desktop */
   .nav_menu-btn {
     display: none;
@@ -401,7 +423,7 @@
         </div>
 
         <!-- Desktop CTA Button -->
-        <div class="btn-wrap hide-tablet">
+        <div class="btn-wrap header-cta hide-tablet">
           {% if module.cta.button_text %}
             {{ btn_macros.animated_button(module.cta.button_text, module.cta.button_link.url.href) }}
           {% endif %}
