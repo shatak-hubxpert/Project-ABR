@@ -55,26 +55,26 @@ button:disabled,
   background-image: radial-gradient(circle farthest-corner at 150% 0%, #51a2ff, #0552fc);
   border-radius: 0.875em;
   border: none;
-  padding: 8px 32px 8px 8px;
+  padding: 4px 32px 4px 8px;
   font-family: var(--secondary-font);
   font-size: 16px;
   font-weight: 600;
   text-decoration: none;
   box-shadow: 0 6px 14px #1355ff66;
   cursor: pointer;
-  transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 /* Expanding White Background (Layer 1) */
 .p-btn .btn-bg-fill {
   position: absolute;
-  top: 8px;
+  top: 4px;
   left: 8px;
   width: 40px;
-  height: calc(100% - 16px);
+  height: calc(100% - 8px);
   background-color: #ffffff;
-  border-radius: calc(0.875em - 4px); 
-  transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+  border-radius: calc(0.875em - 4px);
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
   z-index: 1; /* Sets the white box as the base layer */
 }
 
@@ -88,25 +88,25 @@ button:disabled,
   display: flex;
   align-items: center;
   
-  /* Strict sizing so it never expands past the white box */
+  /* Strict sizing so it never expands past the white box. */
   width: 40px;
-  min-width: 40px; 
+  min-width: 40px;
   max-width: 40px;
   height: 40px;
   flex-shrink: 0; 
   margin-right: 12px;
   overflow: hidden; /* Clips the arrows */
-  transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
   z-index: 2; /* Forces icon to be ON TOP of the white box */
 }
 
 /* The Track that holds two arrows and slides perfectly */
 .p-btn .btn-icon-track {
   display: flex;
-  gap: 20px; /* Exact space between arrows */
-  padding-left: 10px; /* Centers the visible arrow inside the 40px box */
+  gap: 20px; /* One 40px animation step: 20px icon + 20px gap. */
+  padding-left: 10px; /* Centers the visible arrow inside the 40px box. */
   width: max-content;
-  animation: infinite-slide 2.5s linear infinite; 
+  animation: infinite-slide 4s linear infinite;
 }
 
 /* Base Icon styling */
@@ -119,8 +119,8 @@ button:disabled,
 
 /* Seamless Left-to-Right Keyframes */
 @keyframes infinite-slide {
-  /* Shifts left by 40px (20px icon + 20px gap) */
-  0% { transform: translateX(-40px); } 
+  /* Shifts left by one complete 40px icon step. */
+  0% { transform: translateX(-40px); }
   100% { transform: translateX(0px); } 
 }
 
@@ -131,7 +131,7 @@ button:disabled,
   position: relative;
   color: #ffffff;
   white-space: nowrap; /* Prevents text wrapping */
-  transition: color 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+  transition: color 0.3s cubic-bezier(0.25, 1, 0.5, 1);
   z-index: 2; /* Forces text to be ON TOP of the white box */
 }
 
@@ -146,7 +146,7 @@ button:disabled,
   opacity: 0;
   margin-left: 0;
   transform: translateX(-15px);
-  transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
   overflow: hidden;
   z-index: 2; /* Forces right icon to be ON TOP */
 }
@@ -162,7 +162,7 @@ button:disabled,
 
 /* 2. Shift padding to keep the text centered */
 .p-btn:hover {
-  padding: 8px 24px 8px 32px; 
+  padding: 4px 24px 4px 32px;
   box-shadow: 0 4px 12px rgba(5, 82, 252, 0.1);
 }
 
