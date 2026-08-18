@@ -55,7 +55,8 @@ button:disabled,
   background-image: radial-gradient(circle farthest-corner at 150% 0%, #51a2ff, #0552fc);
   border-radius: 0.875em;
   border: none;
-  padding: 8px 32px 8px 8px;
+  min-height: 54px;
+  padding: 2px 26px 2px 2px;
   font-family: var(--secondary-font);
   font-size: 16px;
   font-weight: 600;
@@ -68,12 +69,12 @@ button:disabled,
 /* Expanding White Background (Layer 1) */
 .p-btn .btn-bg-fill {
   position: absolute;
-  top: 8px;
-  left: 8px;
-  width: 40px;
-  height: calc(100% - 16px);
+  top: 2px;
+  left: 2px;
+  width: 54px;
+  height: calc(100% - 4px);
   background-color: #ffffff;
-  border-radius: calc(0.875em - 4px); 
+  border-radius: calc(0.875em - 2px);
   transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
   z-index: 1; /* Sets the white box as the base layer */
 }
@@ -88,13 +89,13 @@ button:disabled,
   display: flex;
   align-items: center;
   
-  /* Strict sizing so it never expands past the white box */
-  width: 40px;
-  min-width: 40px; 
-  max-width: 40px;
-  height: 40px;
+  /* Match the larger white block while keeping the blue edge thin. */
+  width: 54px;
+  min-width: 54px;
+  max-width: 54px;
+  height: 50px;
   flex-shrink: 0; 
-  margin-right: 12px;
+  margin-right: 20px;
   overflow: hidden; /* Clips the arrows */
   transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
   z-index: 2; /* Forces icon to be ON TOP of the white box */
@@ -103,8 +104,8 @@ button:disabled,
 /* The Track that holds two arrows and slides perfectly */
 .p-btn .btn-icon-track {
   display: flex;
-  gap: 20px; /* Exact space between arrows */
-  padding-left: 10px; /* Centers the visible arrow inside the 40px box */
+  gap: 34px; /* One 54px animation step: 20px icon + 34px gap. */
+  padding-left: 17px; /* Centers the visible arrow inside the 54px box. */
   width: max-content;
   animation: infinite-slide 2.5s linear infinite; 
 }
@@ -119,8 +120,8 @@ button:disabled,
 
 /* Seamless Left-to-Right Keyframes */
 @keyframes infinite-slide {
-  /* Shifts left by 40px (20px icon + 20px gap) */
-  0% { transform: translateX(-40px); } 
+  /* Shifts left by one complete 54px icon step. */
+  0% { transform: translateX(-54px); }
   100% { transform: translateX(0px); } 
 }
 
