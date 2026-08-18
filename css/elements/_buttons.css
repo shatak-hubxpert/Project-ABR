@@ -74,7 +74,7 @@ button:disabled,
   width: 54px;
   height: calc(100% - 4px);
   background-color: #ffffff;
-  border-radius: calc(0.875em - 2px);
+  border-radius: calc(0.875em - 4px);
   transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
   z-index: 1; /* Sets the white box as the base layer */
 }
@@ -89,11 +89,11 @@ button:disabled,
   display: flex;
   align-items: center;
   
-  /* Match the larger white block while keeping the blue edge thin. */
-  width: 54px;
-  min-width: 54px;
-  max-width: 54px;
-  height: 50px;
+  /* Strict sizing so it never expands past the white box */
+  width: 40px;
+  min-width: 40px;
+  max-width: 40px;
+  height: 40px;
   flex-shrink: 0; 
   margin-right: 20px;
   overflow: hidden; /* Clips the arrows */
@@ -107,7 +107,7 @@ button:disabled,
   gap: 34px; /* One 54px animation step: 20px icon + 34px gap. */
   padding-left: 17px; /* Centers the visible arrow inside the 54px box. */
   width: max-content;
-  animation: infinite-slide 4s linear infinite;
+  animation: infinite-slide 2.5s linear infinite;
 }
 
 /* Base Icon styling */
@@ -120,8 +120,8 @@ button:disabled,
 
 /* Seamless Left-to-Right Keyframes */
 @keyframes infinite-slide {
-  /* Shifts left by one complete 54px icon step. */
-  0% { transform: translateX(-54px); }
+  /* Shifts left by 40px (20px icon + 20px gap) */
+  0% { transform: translateX(-40px); }
   100% { transform: translateX(0px); } 
 }
 
@@ -163,7 +163,7 @@ button:disabled,
 
 /* 2. Shift padding to keep the text centered */
 .p-btn:hover {
-  padding: 4px 24px 4px 32px;
+  padding: 8px 24px 8px 32px;
   box-shadow: 0 4px 12px rgba(5, 82, 252, 0.1);
 }
 
