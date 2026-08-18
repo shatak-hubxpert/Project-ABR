@@ -63,7 +63,7 @@ button:disabled,
   text-decoration: none;
   box-shadow: 0 6px 14px #1355ff66;
   cursor: pointer;
-  transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 /* Expanding White Background (Layer 1) */
@@ -97,7 +97,7 @@ button:disabled,
   flex-shrink: 0; 
   margin-right: 20px;
   overflow: hidden; /* Clips the arrows */
-  transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
   z-index: 2; /* Forces icon to be ON TOP of the white box */
 }
 
@@ -107,7 +107,7 @@ button:disabled,
   gap: 34px; /* One 54px animation step: 20px icon + 34px gap. */
   padding-left: 17px; /* Centers the visible arrow inside the 54px box. */
   width: max-content;
-  animation: infinite-slide 2.5s linear infinite; 
+  animation: infinite-slide 4s linear infinite;
 }
 
 /* Base Icon styling */
@@ -132,7 +132,7 @@ button:disabled,
   position: relative;
   color: #ffffff;
   white-space: nowrap; /* Prevents text wrapping */
-  transition: color 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+  transition: color 0.3s cubic-bezier(0.25, 1, 0.5, 1);
   z-index: 2; /* Forces text to be ON TOP of the white box */
 }
 
@@ -147,7 +147,7 @@ button:disabled,
   opacity: 0;
   margin-left: 0;
   transform: translateX(-15px);
-  transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
   overflow: hidden;
   z-index: 2; /* Forces right icon to be ON TOP */
 }
@@ -163,7 +163,7 @@ button:disabled,
 
 /* 2. Shift padding to keep the text centered */
 .p-btn:hover {
-  padding: 8px 24px 8px 32px; 
+  padding: 4px 24px 4px 32px;
   box-shadow: 0 4px 12px rgba(5, 82, 252, 0.1);
 }
 
