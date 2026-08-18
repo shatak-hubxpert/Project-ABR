@@ -1,0 +1,118 @@
+{# Module variables setup based on your original code #}
+{% if module.select_blog is number %}
+  {% set select_blog = module.select_blog %}
+{% else %}
+  {% set select_blog = group.id %}
+{% endif %}
+
+{% set target_blog = blog_by_id(select_blog) %}
+{% set my_tags = blog_tags(select_blog, 250) %}
+
+{# Capture the path and force it to a string to prevent HubL evaluation errors #}
+{% set current_path = request.path|default("")|string %}
+
+{# Create a true/false check: Is the user on a tag page? #}
+{% set is_tag_page = "/tag/" in current_path %}
+
+{% require_css %}
+<style>
+  {% scope_css %}
+  /* Wrapper positioning */
+  .blog-filter-wrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 40px; 
+  }
+
+  /* Custom list styling for Pill shape */
+  ul.custom-blog-filter {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--bg-accent-3); 
+    padding: 6px;
+    border-radius: 100px; 
+    list-style: none;
+    margin: 0 !important;
+    gap: 4px;
+  }
+
+  ul.custom-blog-filter li {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  ul.custom-blog-filter li a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 18px 24px;
+    border-radius: 50px; 
+    color: var(--text-primary);
+    font-family: var(--secondary-font);
+    font-size: 0.875rem; 
+    font-weight: 500;
+    text-decoration: none;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
+  }
+
+  /* Active State ("All" or specific tag) */
+  ul.custom-blog-filter li a.active {
+    background-color: var(--bg-primary);
+    color: var(--primary-color);
+    box-shadow: 0 4px 8px rgba(1, 16, 50, 0.2);
+  }
+
+  /* Mobile adjustments - Stacked Column Layout */
+  @media screen and (max-width: 767px) {
+    ul.custom-blog-filter {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch; /* Stretches children to fill width */
+      border-radius: 20px; 
+      padding: 12px;
+      gap: 8px;
+      width: 100%;
+      max-width: 340px; /* Keeps the menu from getting too wide on tablets */
+    }
+    
+    ul.custom-blog-filter li {
+      display: flex;
+      width: 100%;
+    }
+
+    ul.custom-blog-filter li a {
+      width: 100%; /* Forces the background color to span full width */
+      padding: 12px 16px;
+      font-size: 0.875rem;
+      border-radius: 12px; /* Adjusted radius for stacked blocks */
+    }
+  }
+  {% end_scope_css %}
+</style>
+{% end_require_css %}
+
+<div class="blog-filter-wrapper">
+  <ul class="custom-blog-filter">
+    
+    {# The "All" Button: If is_tag_page is false, this gets the active class #}
+    <li>
+      <a href="{{ target_blog.absolute_url }}" class="{% if not is_tag_page %}active{% endif %}">All</a>
+    </li>
+    
+    {# Loop through available tags #}
+    {% for tag in my_tags %}
+      
+      {# Create the specific path string we want to look for #}
+      {% set expected_tag_path = '/tag/' ~ tag.slug %}
+      
+      <li>
+        <a href="{{ blog_tag_url(select_blog, tag.slug) }}" class="{% if expected_tag_path in current_path %}active{% endif %}">{{ tag.name }}</a>
+      </li>
+      
+    {% endfor %}
+    
+  </ul>
+</div>

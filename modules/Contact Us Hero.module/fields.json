@@ -1,0 +1,252 @@
+[ {
+  "id" : "a4907d6f-d67a-396a-549e-46e84feb38a0",
+  "name" : "style",
+  "label" : "Style",
+  "required" : false,
+  "locked" : false,
+  "children" : [ {
+    "id" : "569e60c8-dd7b-18ec-913e-40f63b30e880",
+    "name" : "title_max_width",
+    "label" : "Title max width",
+    "required" : false,
+    "locked" : false,
+    "display" : "text",
+    "step" : 1,
+    "suffix" : "px",
+    "type" : "number",
+    "display_width" : null
+  } ],
+  "tab" : "STYLE",
+  "expanded" : false,
+  "group_occurrence_meta" : null,
+  "type" : "group",
+  "display_width" : null,
+  "default" : { }
+}, {
+  "id" : "99356edc-7095-f61e-f686-eb569c2c2004",
+  "name" : "contact_card",
+  "label" : "Contact Card",
+  "required" : false,
+  "locked" : false,
+  "occurrence" : {
+    "min" : 1,
+    "max" : null,
+    "sorting_label_field" : null,
+    "default" : 3
+  },
+  "children" : [ {
+    "id" : "16f53bd7-01c8-8c30-fc14-b79589637075",
+    "name" : "contact_title",
+    "label" : "Contact Title",
+    "required" : false,
+    "locked" : false,
+    "allow_new_line" : false,
+    "type" : "text",
+    "display_width" : null,
+    "default" : "Message Us"
+  }, {
+    "id" : "ac1d5187-76ae-ed0f-5fd3-398d431f1edd",
+    "name" : "contact_description",
+    "label" : "Contact Description",
+    "required" : false,
+    "locked" : false,
+    "allow_new_line" : false,
+    "type" : "text",
+    "display_width" : null,
+    "default" : "Message us using our online chat system for quick and efficient support."
+  }, {
+    "id" : "4990624d-3898-cbd8-46f1-761140f17491",
+    "name" : "email_field",
+    "label" : "Email Field",
+    "required" : false,
+    "locked" : false,
+    "allow_new_line" : false,
+    "type" : "text",
+    "display_width" : null,
+    "default" : "hello@prospace.studio"
+  }, {
+    "id" : "5d6aae75-d09c-b32d-86cd-7c2cd85903ef",
+    "name" : "phone_number",
+    "label" : "Phone Number",
+    "required" : false,
+    "locked" : false,
+    "allow_new_line" : false,
+    "type" : "text",
+    "display_width" : null,
+    "default" : "+1 (512) 270-1303"
+  }, {
+    "id" : "6132f41b-c68e-5b46-2679-1365facc1c5b",
+    "name" : "address",
+    "label" : "Address",
+    "required" : false,
+    "locked" : false,
+    "allow_new_line" : false,
+    "type" : "text",
+    "display_width" : null,
+    "default" : "Claymont, DE, 19703 USA"
+  }, {
+    "id" : "806e543a-448b-a176-ff0c-c6a567dcfd21",
+    "name" : "contact_option",
+    "label" : "Contact Option",
+    "required" : false,
+    "locked" : false,
+    "display" : "select",
+    "choices" : [ [ "email", "Email" ], [ "phone", "Phone" ], [ "address", "Address" ] ],
+    "multiple" : false,
+    "reordering_enabled" : true,
+    "preset" : null,
+    "type" : "choice",
+    "display_width" : null,
+    "default" : "email"
+  }, {
+    "id" : "83acd269-3ae9-09f9-1424-33203f3b8896",
+    "name" : "svg_icon",
+    "label" : "SVG Icon",
+    "required" : false,
+    "locked" : false,
+    "allow_new_line" : false,
+    "type" : "text",
+    "display_width" : null,
+    "default" : "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\"><path d=\"M7 8.5L9.94202 10.2394C11.6572 11.2535 12.3428 11.2535 14.058 10.2394L17 8.5\" stroke=\"white\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M2.01577 13.4756C2.08114 16.5412 2.11383 18.0739 3.24496 19.2094C4.37608 20.3448 5.95033 20.3843 9.09883 20.4634C11.0393 20.5122 12.9607 20.5122 14.9012 20.4634C18.0497 20.3843 19.6239 20.3448 20.7551 19.2094C21.8862 18.0739 21.9189 16.5412 21.9842 13.4756C22.0053 12.4899 22.0053 11.5101 21.9842 10.5244C21.9189 7.45886 21.8862 5.92609 20.7551 4.79066C19.6239 3.65523 18.0497 3.61568 14.9012 3.53657C12.9607 3.48781 11.0393 3.48781 9.09882 3.53656C5.95033 3.61566 4.37608 3.65521 3.24495 4.79065C2.11382 5.92608 2.08114 7.45885 2.01576 10.5244C1.99474 11.5101 1.99475 12.4899 2.01577 13.4756Z\" stroke=\"white\" stroke-width=\"2\" stroke-linejoin=\"round\"/><script xmlns=\"\"/></svg>"
+  } ],
+  "tab" : "CONTENT",
+  "expanded" : false,
+  "group_occurrence_meta" : null,
+  "type" : "group",
+  "display_width" : null,
+  "default" : [ {
+    "contact_title" : "Message Us",
+    "contact_description" : "Message us using our online chat system for quick and efficient support.",
+    "email_field" : "hello@prospace.studio",
+    "phone_number" : "+1 (512) 270-1303",
+    "address" : "Claymont, DE, 19703 USA",
+    "contact_option" : "email",
+    "svg_icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\"><path d=\"M7 8.5L9.94202 10.2394C11.6572 11.2535 12.3428 11.2535 14.058 10.2394L17 8.5\" stroke=\"white\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M2.01577 13.4756C2.08114 16.5412 2.11383 18.0739 3.24496 19.2094C4.37608 20.3448 5.95033 20.3843 9.09883 20.4634C11.0393 20.5122 12.9607 20.5122 14.9012 20.4634C18.0497 20.3843 19.6239 20.3448 20.7551 19.2094C21.8862 18.0739 21.9189 16.5412 21.9842 13.4756C22.0053 12.4899 22.0053 11.5101 21.9842 10.5244C21.9189 7.45886 21.8862 5.92609 20.7551 4.79066C19.6239 3.65523 18.0497 3.61568 14.9012 3.53657C12.9607 3.48781 11.0393 3.48781 9.09882 3.53656C5.95033 3.61566 4.37608 3.65521 3.24495 4.79065C2.11382 5.92608 2.08114 7.45885 2.01576 10.5244C1.99474 11.5101 1.99475 12.4899 2.01577 13.4756Z\" stroke=\"white\" stroke-width=\"2\" stroke-linejoin=\"round\"/><script xmlns=\"\"/></svg>"
+  }, {
+    "contact_title" : "Message Us",
+    "contact_description" : "Message us using our online chat system for quick and efficient support.",
+    "email_field" : "hello@prospace.studio",
+    "phone_number" : "+1 (512) 270-1303",
+    "address" : "Claymont, DE, 19703 USA",
+    "contact_option" : "email",
+    "svg_icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\"><path d=\"M7 8.5L9.94202 10.2394C11.6572 11.2535 12.3428 11.2535 14.058 10.2394L17 8.5\" stroke=\"white\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M2.01577 13.4756C2.08114 16.5412 2.11383 18.0739 3.24496 19.2094C4.37608 20.3448 5.95033 20.3843 9.09883 20.4634C11.0393 20.5122 12.9607 20.5122 14.9012 20.4634C18.0497 20.3843 19.6239 20.3448 20.7551 19.2094C21.8862 18.0739 21.9189 16.5412 21.9842 13.4756C22.0053 12.4899 22.0053 11.5101 21.9842 10.5244C21.9189 7.45886 21.8862 5.92609 20.7551 4.79066C19.6239 3.65523 18.0497 3.61568 14.9012 3.53657C12.9607 3.48781 11.0393 3.48781 9.09882 3.53656C5.95033 3.61566 4.37608 3.65521 3.24495 4.79065C2.11382 5.92608 2.08114 7.45885 2.01576 10.5244C1.99474 11.5101 1.99475 12.4899 2.01577 13.4756Z\" stroke=\"white\" stroke-width=\"2\" stroke-linejoin=\"round\"/><script xmlns=\"\"/></svg>"
+  }, {
+    "contact_title" : "Message Us",
+    "contact_description" : "Message us using our online chat system for quick and efficient support.",
+    "email_field" : "hello@prospace.studio",
+    "phone_number" : "+1 (512) 270-1303",
+    "address" : "Claymont, DE, 19703 USA",
+    "contact_option" : "email",
+    "svg_icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\"><path d=\"M7 8.5L9.94202 10.2394C11.6572 11.2535 12.3428 11.2535 14.058 10.2394L17 8.5\" stroke=\"white\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M2.01577 13.4756C2.08114 16.5412 2.11383 18.0739 3.24496 19.2094C4.37608 20.3448 5.95033 20.3843 9.09883 20.4634C11.0393 20.5122 12.9607 20.5122 14.9012 20.4634C18.0497 20.3843 19.6239 20.3448 20.7551 19.2094C21.8862 18.0739 21.9189 16.5412 21.9842 13.4756C22.0053 12.4899 22.0053 11.5101 21.9842 10.5244C21.9189 7.45886 21.8862 5.92609 20.7551 4.79066C19.6239 3.65523 18.0497 3.61568 14.9012 3.53657C12.9607 3.48781 11.0393 3.48781 9.09882 3.53656C5.95033 3.61566 4.37608 3.65521 3.24495 4.79065C2.11382 5.92608 2.08114 7.45885 2.01576 10.5244C1.99474 11.5101 1.99475 12.4899 2.01577 13.4756Z\" stroke=\"white\" stroke-width=\"2\" stroke-linejoin=\"round\"/><script xmlns=\"\"/></svg>"
+  } ]
+}, {
+  "id" : "79fa1808-25a2-e679-f23d-52beafe15b87",
+  "name" : "contact_form_card",
+  "label" : "Contact Form Card",
+  "required" : false,
+  "locked" : false,
+  "children" : [ {
+    "id" : "56b0e8df-22d4-0764-6648-6138c7061822",
+    "name" : "svg_icon_box",
+    "label" : "SVG Icon Box",
+    "required" : false,
+    "locked" : false,
+    "allow_new_line" : false,
+    "type" : "text",
+    "display_width" : null,
+    "default" : "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\"><path d=\"M7 8.5L9.94202 10.2394C11.6572 11.2535 12.3428 11.2535 14.058 10.2394L17 8.5\" stroke=\"white\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M2.01577 13.4756C2.08114 16.5412 2.11383 18.0739 3.24496 19.2094C4.37608 20.3448 5.95033 20.3843 9.09883 20.4634C11.0393 20.5122 12.9607 20.5122 14.9012 20.4634C18.0497 20.3843 19.6239 20.3448 20.7551 19.2094C21.8862 18.0739 21.9189 16.5412 21.9842 13.4756C22.0053 12.4899 22.0053 11.5101 21.9842 10.5244C21.9189 7.45886 21.8862 5.92609 20.7551 4.79066C19.6239 3.65523 18.0497 3.61568 14.9012 3.53657C12.9607 3.48781 11.0393 3.48781 9.09882 3.53656C5.95033 3.61566 4.37608 3.65521 3.24495 4.79065C2.11382 5.92608 2.08114 7.45885 2.01576 10.5244C1.99474 11.5101 1.99475 12.4899 2.01577 13.4756Z\" stroke=\"white\" stroke-width=\"2\" stroke-linejoin=\"round\"/><script xmlns=\"\"/></svg>"
+  }, {
+    "id" : "2c5f11b3-e6d5-bbec-f14e-dc72ddbc06a5",
+    "name" : "card_title",
+    "label" : "Card Title",
+    "required" : false,
+    "locked" : false,
+    "allow_new_line" : false,
+    "type" : "text",
+    "display_width" : null,
+    "default" : "Feel free to send our friendly team a message"
+  }, {
+    "id" : "5717e796-e974-cc67-f07f-4f2e01997249",
+    "name" : "subtitle",
+    "label" : "Subtitle",
+    "required" : false,
+    "locked" : false,
+    "allow_new_line" : false,
+    "type" : "text",
+    "display_width" : null,
+    "default" : "Message us using our online chat system for quick and efficient support."
+  }, {
+    "id" : "d5c14941-256b-7791-e477-977378a1d654",
+    "name" : "benefit_pill",
+    "label" : "Benefit Pill",
+    "required" : false,
+    "locked" : false,
+    "occurrence" : {
+      "min" : 1,
+      "max" : null,
+      "sorting_label_field" : null,
+      "default" : 1
+    },
+    "children" : [ {
+      "id" : "4fe471a4-ce2d-9575-b90b-91863d9a3dbb",
+      "name" : "svg_icon",
+      "label" : "SVG Icon ",
+      "required" : false,
+      "locked" : false,
+      "allow_new_line" : false,
+      "type" : "text",
+      "display_width" : null,
+      "default" : "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"none\"><rect width=\"20\" height=\"20\" rx=\"10\" fill=\"#1FFF36\"/><path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M14.8029 6.11345C15.0524 6.3516 15.0616 6.74692 14.8234 6.99642L8.26591 13.8662C8.1498 13.9879 7.98956 14.0575 7.82142 14.0595C7.65327 14.0614 7.49145 13.9955 7.37255 13.8766L5.1867 11.6908C4.94281 11.4469 4.94281 11.0514 5.1867 10.8075C5.4306 10.5637 5.82603 10.5637 6.06992 10.8075L7.80377 12.5414L13.9199 6.13398C14.1581 5.88448 14.5534 5.87529 14.8029 6.11345Z\" fill=\"#011032\" stroke=\"#000819\" stroke-width=\"0.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><script xmlns=\"\"/></svg>"
+    }, {
+      "id" : "b92fb36e-893c-af97-355b-8e8feafae3cd",
+      "name" : "benefit_text",
+      "label" : "Benefit Text",
+      "required" : false,
+      "locked" : false,
+      "allow_new_line" : false,
+      "type" : "text",
+      "display_width" : null,
+      "default" : "Free 7-day trial"
+    } ],
+    "tab" : "CONTENT",
+    "expanded" : false,
+    "group_occurrence_meta" : null,
+    "type" : "group",
+    "display_width" : null,
+    "default" : [ {
+      "svg_icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"none\"><rect width=\"20\" height=\"20\" rx=\"10\" fill=\"#1FFF36\"/><path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M14.8029 6.11345C15.0524 6.3516 15.0616 6.74692 14.8234 6.99642L8.26591 13.8662C8.1498 13.9879 7.98956 14.0575 7.82142 14.0595C7.65327 14.0614 7.49145 13.9955 7.37255 13.8766L5.1867 11.6908C4.94281 11.4469 4.94281 11.0514 5.1867 10.8075C5.4306 10.5637 5.82603 10.5637 6.06992 10.8075L7.80377 12.5414L13.9199 6.13398C14.1581 5.88448 14.5534 5.87529 14.8029 6.11345Z\" fill=\"#011032\" stroke=\"#000819\" stroke-width=\"0.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><script xmlns=\"\"/></svg>",
+      "benefit_text" : "Free 7-day trial"
+    } ]
+  }, {
+    "id" : "499fb4e6-6d66-b3b9-e8fe-7c889930a817",
+    "name" : "form_field",
+    "label" : "Form",
+    "required" : false,
+    "locked" : false,
+    "embed_versions" : [ "v2", "v4" ],
+    "type" : "form",
+    "display_width" : null,
+    "default" : {
+      "response_type" : "inline",
+      "message" : "Thanks for submitting the form."
+    }
+  } ],
+  "tab" : "CONTENT",
+  "expanded" : false,
+  "group_occurrence_meta" : null,
+  "type" : "group",
+  "display_width" : null,
+  "default" : {
+    "svg_icon_box" : "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\"><path d=\"M7 8.5L9.94202 10.2394C11.6572 11.2535 12.3428 11.2535 14.058 10.2394L17 8.5\" stroke=\"white\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M2.01577 13.4756C2.08114 16.5412 2.11383 18.0739 3.24496 19.2094C4.37608 20.3448 5.95033 20.3843 9.09883 20.4634C11.0393 20.5122 12.9607 20.5122 14.9012 20.4634C18.0497 20.3843 19.6239 20.3448 20.7551 19.2094C21.8862 18.0739 21.9189 16.5412 21.9842 13.4756C22.0053 12.4899 22.0053 11.5101 21.9842 10.5244C21.9189 7.45886 21.8862 5.92609 20.7551 4.79066C19.6239 3.65523 18.0497 3.61568 14.9012 3.53657C12.9607 3.48781 11.0393 3.48781 9.09882 3.53656C5.95033 3.61566 4.37608 3.65521 3.24495 4.79065C2.11382 5.92608 2.08114 7.45885 2.01576 10.5244C1.99474 11.5101 1.99475 12.4899 2.01577 13.4756Z\" stroke=\"white\" stroke-width=\"2\" stroke-linejoin=\"round\"/><script xmlns=\"\"/></svg>",
+    "card_title" : "Feel free to send our friendly team a message",
+    "subtitle" : "Message us using our online chat system for quick and efficient support.",
+    "benefit_pill" : [ {
+      "svg_icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"none\"><rect width=\"20\" height=\"20\" rx=\"10\" fill=\"#1FFF36\"/><path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M14.8029 6.11345C15.0524 6.3516 15.0616 6.74692 14.8234 6.99642L8.26591 13.8662C8.1498 13.9879 7.98956 14.0575 7.82142 14.0595C7.65327 14.0614 7.49145 13.9955 7.37255 13.8766L5.1867 11.6908C4.94281 11.4469 4.94281 11.0514 5.1867 10.8075C5.4306 10.5637 5.82603 10.5637 6.06992 10.8075L7.80377 12.5414L13.9199 6.13398C14.1581 5.88448 14.5534 5.87529 14.8029 6.11345Z\" fill=\"#011032\" stroke=\"#000819\" stroke-width=\"0.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><script xmlns=\"\"/></svg>",
+      "benefit_text" : "Free 7-day trial"
+    } ],
+    "form_field" : {
+      "response_type" : "inline",
+      "message" : "Thanks for submitting the form."
+    }
+  }
+} ]

@@ -1,0 +1,382 @@
+<!--
+    templateType: blog_listing
+    isAvailableForNewContent: true
+    label: Blog listing
+    screenshotPath: 
+-->
+{% extends "../layouts/base.html" %}
+
+{% block body %}
+
+{# --- Area to add Drag & Drop modules #}
+{% dnd_area "body-area" label="Body", class="body-area" %}
+  {% dnd_section %}
+    {% dnd_column offset=0,width=12 %}
+      {% dnd_row %}
+      {% end_dnd_row %}
+    {% end_dnd_column %}
+  {% end_dnd_section %}
+{% end_dnd_area %}
+
+{% require_css %}
+<style>
+  /* ==========================================================================
+     Blog Listing Layout & Grid
+     ========================================================================== */
+  .blog-listing-section {
+    position: relative;
+    padding-bottom: 100px;
+    z-index: 10;
+  }
+
+  /* Space out the header/filter area from the cards */
+  .filter-section {
+    margin-bottom: 48px;
+  }
+
+  .blog-loop-container {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .blog-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+  }
+
+  /* ==========================================================================
+     Blog Card Shared Styles (Made entirely clickable)
+     ========================================================================== */
+  .blog-card {
+    background-color: var(--bg-primary, #ffffff);
+    border-radius: 20px;
+    padding: 20px;
+    display: flex;
+    gap: 32px;
+    box-shadow: 0 4px 20px rgba(1, 16, 50, 0.03);
+    transition: box-shadow 0.4s ease, transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    text-decoration: none !important; /* Removes underline for the whole card link */
+    color: inherit;
+    min-height:20.625rem;
+  }
+
+  .blog-card:hover {
+    box-shadow: 0 16px 40px rgba(1, 16, 50, 0.08);
+    transform: translateY(-4px);
+  }
+
+  /* Image Wrapper */
+  .blog-card-image-wrap {
+    border-radius: 16px;
+    overflow: hidden;
+    display: block;
+    position: relative;
+    background-color: var(--bg-accent-2);
+  }
+
+  .blog-card-image-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  .blog-card:hover .blog-card-image-wrap img {
+    transform: scale(1.2);
+  }
+
+  /* Content Wrapper */
+  .blog-card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .blog-card-date {
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+
+  /* 2. Remove color change of title on hover */
+  .blog-card-title {
+    margin-bottom: 24px;
+    color: var(--text-primary) !important;
+    transition: none !important; 
+    font-size:var(--text-h5) !important;
+  }
+
+  /* Read More Button */
+  .blog-card-read-more {
+    margin-top: auto; /* Pushes to the bottom of the flex container */
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--primary-color);
+    font-family: var(--primary-font);
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: gap 0.3s ease;
+  }
+
+  .blog-card:hover .blog-card-read-more {
+    gap: 10px; /* Slight right shift of the arrows on hover */
+  }
+
+  /* Custom Arrow Image styles */
+  .blog-card-read-more img {
+    width: 24px; /* Adjust size based on your specific icon */
+    height: 16px;
+    object-fit: contain;
+    display: block;
+  }
+
+  /* ==========================================================================
+     Featured Card (Top Post)
+     ========================================================================== */
+  .blog-card.is-featured {
+    flex-direction: row;
+    align-items: stretch;
+  }
+
+  .blog-card.is-featured .blog-card-image-wrap {
+    flex: 6; /* 60% width */
+    aspect-ratio: 16 / 9;
+  }
+
+  .blog-card.is-featured .blog-card-content {
+    flex: 4; /* 40% width */
+    padding: 32px 16px;
+    justify-content: center;
+  }
+
+  /* ==========================================================================
+     Grid Cards (Standard Posts)
+     ========================================================================== */
+  .blog-card:not(.is-featured) {
+    flex-direction: row;
+    align-items: stretch;
+  }
+
+  .blog-card:not(.is-featured) .blog-card-image-wrap {
+    flex: 4.5; /* Approx 45% width */
+    aspect-ratio: 1 / 1; /* Square image to match reference */
+  }
+
+  .blog-card:not(.is-featured) .blog-card-content {
+    flex: 5.5; /* Approx 55% width */
+    padding: 16px 8px;
+    justify-content: center;
+  }
+
+  /* ==========================================================================
+     Pagination
+     ========================================================================== */
+  .blog-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    margin-top: 64px;
+  }
+
+  .blog-pagination a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 32px;
+    background-color: var(--bg-primary);
+    border-radius: 12px;
+    color: var(--text-primary);
+    font-family: var(--primary-font);
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(1, 16, 50, 0.04);
+    transition: all 0.3s ease;
+  }
+
+  .blog-pagination a:hover {
+    background-color: var(--primary-color);
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(47, 107, 255, 0.2);
+  }
+
+  /* ==========================================================================
+     GSAP Initial State
+     ========================================================================== */
+  .gsap-blog-card {
+    opacity: 0;
+    will-change: transform, opacity;
+  }
+
+  /* ==========================================================================
+     Mobile Responsive
+     ========================================================================== */
+  @media screen and (max-width: 991px) {
+    .blog-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .blog-card.is-featured,
+    .blog-card:not(.is-featured) {
+      flex-direction: column;
+      gap: 24px;
+      padding: 16px;
+    }
+
+    .blog-card.is-featured .blog-card-image-wrap,
+    .blog-card:not(.is-featured) .blog-card-image-wrap {
+      flex: none;
+      width: 100%;
+      min-height:320px;
+    }
+
+    .blog-card.is-featured .blog-card-content,
+    .blog-card:not(.is-featured) .blog-card-content {
+      flex: none;
+      width: 100%;
+      padding: 8px 8px 16px 8px;
+    }
+  }
+</style>
+{% end_require_css %}
+
+
+<section class=" blog-listing-section">
+  
+  <div class="filter-section container">
+    <!-- Header content module for page title eyebrow and CTA -->
+    {% module "module_178696191809020" path="/ABR theme/modules/Global Header", label="Global Header" %}
+    <!-- Header content module for page title eyebrow and CTA -->
+
+    <!-- Blog filter module -->
+    <div class='mt-80'>
+      {% module "module_178696190463018" path="/ABR theme/modules/ABR Blog post filter", label="ABR Blog post filter" %}
+    </div>
+    <!-- End Blog filter module -->
+    
+  </div>
+
+  <div class="container">
+    {% if contents %}
+      <div class="blog-loop-container">
+        
+        <!-- FEATURED POST (Loop index 1) -->
+        <div class="blog-featured">
+          {% for content in contents %}
+            {% if loop.index == 1 %}
+              
+              <!-- 3. Make whole card clickable (Changed from <article> to <a>) -->
+              <a href="{{ content.absolute_url }}" class="blog-card is-featured gsap-blog-card">
+                
+                <div class="blog-card-image-wrap">
+                  {% if content.featured_image %}
+                    <img src="{{ content.featured_image }}" alt="{{ content.name }}">
+                  {% endif %}
+                </div>
+
+                <div class="blog-card-content">
+                  <span class="blog-card-date body-2">{{ content.publish_date|datetimeformat('%B %e, %Y') }}</span>
+                  <h2 class="blog-card-title">{{ content.name }}</h2>
+                  
+                  <div class="blog-card-read-more">
+                    Read More
+                    <!-- 4. Replaced SVG with your Custom Image -->
+                    <img src="https://51744912.fs1.hubspotusercontent-na1.net/hubfs/51744912/6a2ede5cb79970e94d7fc03a_arrows-blue%20(1).svg" alt="Arrow Right">
+                  </div>
+                </div>
+
+              </a>
+            {% endif %}
+          {% endfor %}
+        </div>
+
+        <!-- GRID POSTS (Loop index > 1) -->
+        <div class="blog-grid">
+          {% for content in contents %}
+            {% if loop.index > 1 %}
+              
+              <!-- 3. Make whole card clickable (Changed from <article> to <a>) -->
+              <a href="{{ content.absolute_url }}" class="blog-card gsap-blog-card">
+                
+                <div class="blog-card-image-wrap">
+                  {% if content.featured_image %}
+                    <img src="{{ content.featured_image }}" alt="{{ content.name }}">
+                  {% endif %}
+                </div>
+
+                <div class="blog-card-content">
+                  <span class="blog-card-date body-2">{{ content.publish_date|datetimeformat('%B %e, %Y') }}</span>
+                  <!-- Using h4 for the smaller grid items based on typography variables -->
+                  <h4 class="blog-card-title">{{ content.name }}</h4>
+                  
+                  <div class="blog-card-read-more">
+                    Read More
+                    <!-- 4. Replaced SVG with your Custom Image -->
+                    <img src="https://51744912.fs1.hubspotusercontent-na1.net/hubfs/51744912/6a2ede5cb79970e94d7fc03a_arrows-blue%20(1).svg" alt="Arrow Right">
+                  </div>
+                </div>
+
+              </a>
+            {% endif %}
+          {% endfor %}
+        </div>
+
+      </div>
+
+      <!-- PAGINATION -->
+      {% if contents.total_page_count > 1 %}
+        <div class="blog-pagination">
+          {% if last_page_num %}
+            <a class="pagination-prev" href="{{ blog_page_link(last_page_num) }}">Prev</a>
+          {% endif %}
+          {% if next_page_num %}
+            <a class="pagination-next" href="{{ blog_page_link(next_page_num) }}">Next</a>
+          {% endif %}
+        </div>
+      {% endif %}
+
+    {% else %}
+      <div class="blog-no-results">
+        <h4>No blog posts found.</h4>
+      </div>
+    {% endif %}
+  </div>
+
+</section>
+
+{% require_js %}
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    // Check if GSAP is loaded via the base template
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Staggered slide-up animation for all blog cards
+      gsap.fromTo(".gsap-blog-card", 
+        { y: 50, opacity: 0 }, 
+        { 
+          y: 0, 
+          opacity: 1, 
+          duration: 0.8, 
+          stagger: 0.1, 
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ".blog-loop-container",
+            start: "top 85%",
+            once: true
+          }
+        }
+      );
+    }
+  });
+</script>
+{% end_require_js %}
+
+{% endblock body %}

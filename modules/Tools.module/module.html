@@ -1,0 +1,283 @@
+{% import '../../Macros/Button.html' as btn_macros %}
+
+{% require_css %}
+<style>
+  {% scope_css %}
+  /* ==================================
+     Grid Layout
+     ================================== */
+  .smart-tools-grid {
+    display: grid;
+    /* 45% Text / 55% Image split to match the reference */
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: clamp(40px, 6vw, 80px);
+    align-items: center; 
+  }
+
+  /* ==================================
+     Left Column: Content
+     ================================== */
+  .smart-tools-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .smart-tools-content h2 {
+    margin: 24px 0;
+    letter-spacing: -0.02em;
+  }
+
+  .smart-tools-desc {
+    color: var(--text-secondary);
+    margin: 0 0 40px 0;
+  }
+
+  /* Standardized Title Animation Classes */
+  .smart-tools-content h2 span.word {
+    display: inline-block;
+    will-change: transform, filter;
+  }
+
+  /* ==================================
+     Badges Group
+     ================================== */
+  .smart-tools-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .smart-tools-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    /* Updated to dashed border */
+    border: 1px dashed #0000004d; 
+    border-radius: 100px; /* Pill shape */
+    background-color: transparent;
+  }
+
+  .smart-tools-badge img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    flex-shrink: 0;
+  }
+
+  .smart-tools-badge span {
+    color: var(--text-primary);
+    font-size: 0.875rem; /* 14px */
+    white-space: nowrap;
+  }
+
+  /* ==================================
+     Right Column: Image Wrap
+     ================================== */
+  .smart-tools-image-wrap {
+    width: 100%;
+    border-radius: 20px;
+    position: relative;
+    /* Fallback color and Background settings for the dynamic image */
+    background-color: var(--bg-accent-2);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    
+    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  .smart-tools-image-wrap:hover {
+    transform: scale(1.02);
+  }
+
+  .smart-tools-image-wrap img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: contain;
+  }
+
+  /* ==================================
+     GSAP Initial States
+     ================================== */
+  .gsap-slide-left,
+  .gsap-slide-right {
+    opacity: 0;
+    will-change: transform, opacity;
+  }
+
+  /* ==================================
+     Mobile Responsive
+     ================================== */
+  @media screen and (max-width: 991px) {
+    .smart-tools-grid {
+      grid-template-columns: 1fr;
+      /* Reorder so text is above image on mobile */
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .smart-tools-image-wrap {
+      width: 100%;
+      order: 2;
+    }
+
+    .smart-tools-content {
+      order: 1;
+    }
+  }
+
+  @media screen and (max-width: 767px) {
+    .smart-tools-badges {
+      gap: 12px;
+    }
+    
+    .smart-tools-badge {
+      padding: 8px 14px;
+    }
+
+    .smart-tools-badge span {
+      font-size: 0.8125rem; /* 13px */
+    }
+  }
+  {% end_scope_css %}
+</style>
+{% end_require_css %}
+
+<section class="section smart-tools-section">
+  <div class="container">
+    <div class="smart-tools-grid">
+      
+      <!-- Left Column: Content (Slides from Left) -->
+      <div class="smart-tools-content gsap-slide-left">
+        
+        <!-- Eyebrow (Static) -->
+        {% if module.section_headers.eyebrow_text %}
+          <div>
+            {{ btn_macros.eyebrow_label(module.section_headers.eyebrow_text) }}
+          </div>
+        {% endif %}
+
+        <!-- Title (Standardized Blur Reveal) -->
+        {% if module.section_headers.title %}
+          <h2 class="gsap-blur-reveal">{{ module.section_headers.title }}</h2>
+        {% endif %}
+
+        <!-- Description -->
+        {% if module.section_headers.description %}
+          <p class="body smart-tools-desc">{{ module.section_headers.description }}</p>
+        {% endif %}
+
+        <!-- Badges Loop -->
+        <div class="smart-tools-badges">
+          {% for badge in module.badges %}
+            <div class="smart-tools-badge">
+              {% if badge.icon.src %}
+                <img src="{{ badge.icon.src }}" alt="{{ badge.icon.alt|default('Icon') }}" loading="{{ badge.icon.loading }}" width="{{ badge.icon.width }}" height="{{ badge.icon.height }}">
+              {% endif %}
+              
+              {% if badge.badge_text %}
+                <span class="body">{{ badge.badge_text }}</span>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+
+      </div>
+
+      <!-- Right Column: Image with dynamic BG (Slides from Right) -->
+      <div class="smart-tools-image-wrap gsap-slide-right"
+           {% if module.style.image_background_image.src %}
+           style="background-image: url('{{ module.style.image_background_image.src }}');"
+           {% endif %}>
+        {% if module.image.src %}
+          <img src="{{ module.image.src }}" alt="{{ module.image.alt|default('Smart Tools Image') }}" loading="{{ module.image.loading }}" width="{{ module.image.width }}" height="{{ module.image.height }}">
+        {% endif %}
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- GSAP Scroll Animations -->
+{% require_js %}
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
+
+      const section = document.querySelector(".smart-tools-section");
+      if (!section) return;
+
+      /* ------------------------------------------------------------------
+         1. Left Section (Content) Slide-in
+      ------------------------------------------------------------------ */
+      gsap.fromTo(".gsap-slide-left", 
+        { x: -80, opacity: 0 }, 
+        { 
+          x: 0, 
+          opacity: 1, 
+          duration: 1.2, 
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ".smart-tools-grid",
+            start: "top 85%",
+            once: true
+          }
+        }
+      );
+
+      /* ------------------------------------------------------------------
+         2. Right Section (Image) Slide-in
+      ------------------------------------------------------------------ */
+      gsap.fromTo(".gsap-slide-right", 
+        { x: 80, opacity: 0 }, 
+        { 
+          x: 0, 
+          opacity: 1, 
+          duration: 1.2, 
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ".smart-tools-grid",
+            start: "top 85%",
+            once: true
+          }
+        }
+      );
+
+      /* ------------------------------------------------------------------
+         3. Heading Blur Reveal
+      ------------------------------------------------------------------ */
+      const heading = section.querySelector(".gsap-blur-reveal");
+      if (heading) {
+        const words = heading.textContent.trim().split(/\s+/);
+        heading.innerHTML = words.map(w => `<span class="word">${w}</span>`).join(' ');
+        const wordSpans = heading.querySelectorAll('.word');
+
+        gsap.set(wordSpans, { opacity: 0, filter: 'blur(10px)' }); // x/y removed so it doesn't fight the left slide
+
+        ScrollTrigger.create({
+          trigger: ".smart-tools-grid",
+          start: 'top 85%',
+          once: true,
+          onEnter() {
+            gsap.to(wordSpans, {
+              opacity: 1,
+              filter: 'blur(0px)',
+              duration: 0.8,
+              stagger: 0.05,
+              ease: 'sine.out',
+              delay: 0.2 // Small delay so the left-slide gets a head start
+            });
+          }
+        });
+      }
+
+    } else {
+      console.warn("GSAP or ScrollTrigger is missing. Make sure the CDNs are added to base.html.");
+    }
+  });
+</script>
+{% end_require_js %}

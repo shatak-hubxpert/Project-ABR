@@ -1,0 +1,63 @@
+<div class="guidance-card gsap-guidance-el"
+     {% if module.style.card_background_image.src %}
+     style="background-image: url('{{ module.style.card_background_image.src }}');"
+     {% endif %}>
+
+  {% if module.avatars %}
+    <div class="guidance-avatars">
+      {% for avatar in module.avatars %}
+        {% if avatar.image.src %}
+          <img src="{{ avatar.image.src }}" alt="{{ avatar.image.alt|default('') }}" loading="{{ avatar.image.loading|default('lazy') }}" class="guidance-avatar">
+        {% endif %}
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  {% if module.heading %}
+    <h4 class="guidance-heading">{{ module.heading }}</h4>
+  {% endif %}
+
+  {% if module.subtitle %}
+    <p class="guidance-subtitle">{{ module.subtitle }}</p>
+  {% endif %}
+
+  {% if module.button.button_text %}
+    <a href="{{ module.button.link.url.href }}"
+       class="guidance-btn"
+       {% if module.button.link.open_in_new_tab %}target="_blank"{% endif %}
+       {% if module.button.link.no_follow %}rel="nofollow"{% endif %}>
+      {{ module.button.button_text }}
+    </a>
+  {% endif %}
+
+</div>
+
+{% require_js %}
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
+
+      const card = document.querySelector(".guidance-card");
+      if (!card) return;
+
+      gsap.fromTo(card,
+        { y: 30, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: card,
+            start: "top 85%",
+            once: true
+          }
+        }
+      );
+    } else {
+      console.warn("GSAP or ScrollTrigger is missing. Make sure the CDNs are added to base.html.");
+    }
+  });
+</script>
+{% end_require_js %}

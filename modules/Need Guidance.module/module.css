@@ -1,0 +1,78 @@
+.guidance-card {
+  /* Fallback color if no background image is present */
+  background-color: var(--bg-accent-2, #E2E8F0);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 20px 40px rgba(1, 16, 50, 0.04);
+  /* Ensures background images fit perfectly */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.gsap-guidance-el {
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.guidance-avatars {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.guidance-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  object-fit: cover;
+  display: block;
+  border: 2px solid var(--bg-primary);
+  margin-left: -12px;
+}
+
+.guidance-avatar:first-child {
+  margin-left: 0;
+}
+
+.guidance-heading {
+  margin-bottom: 8px;
+}
+
+.guidance-subtitle {
+  font-family: var(--secondary-font);
+  font-size: var(--text-body-2);
+  line-height: 1.5;
+  color: var(--text-secondary);
+  margin: 0 0 24px;
+}
+
+.guidance-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--primary-color);
+  color: #ffffff;
+  font-family: var(--primary-font);
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 16px 32px;
+  border-radius: 12px;
+  width: 100%;
+  box-sizing: border-box;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.guidance-btn:hover {
+  background-color: #011032;
+}
+
+@media screen and (max-width: 767px) {
+  .guidance-card {
+    padding: 32px 24px;
+  }
+}

@@ -1,0 +1,317 @@
+{% require_css %}
+<style>
+{% scope_css %}
+  .section {
+  }
+
+  .container {
+      
+  }
+
+  /* Top Contact Cards */
+  .contact-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .contact-card {
+    background-color: #01103214;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    backdrop-filter: blur(54px);
+    -webkit-backdrop-filter: blur(54px);
+  }
+
+  .icon-box {
+    width: 48px;
+    height: 48px;
+    background-image: radial-gradient(circle farthest-corner at 200% 0%, #51a2ff, #0552fc);
+    color: var(--text-light-primary);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .icon-box svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .contact-card p {
+    color: var(--text-secondary);
+    flex-grow: 1; 
+  }
+
+  .contact-card h6 {
+    color: var(--text-primary, #0f172a);
+  }
+
+  /* Link Styling for Contact Info */
+  .contact-link p {
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: opacity 0.2s ease;
+  }
+
+  .contact-link:hover p {
+    opacity: 0.8;
+  }
+
+  /* Bottom Form Section (Overlay Fix Applied Here) */
+  .contact-form-section {
+    position: relative; /* Needed to position the overlay */
+    border-radius: 24px;
+    display: flex;
+    justify-content: space-between;
+    overflow: hidden; /* Keeps the overlay inside the border-radius */
+  } 
+
+  /* The actual background overlay layer */
+  .contact-form-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(180deg, #ffffff, #ffffffb3);
+    opacity: 0.7; /* Opacity only affects this background layer now */
+    z-index: 0; 
+  }
+
+  /* Ensures all content sits above the background overlay */
+  .form-content-col,
+  .form-wrapper-col {
+    position: relative;
+    z-index: 1; 
+  }
+
+  .form-content-col {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    max-width:26rem;
+  }
+
+  .form-content-col > p {
+    color: var(--text-secondary, #64748b);
+  }
+
+  .hero-contact_card-left-content {
+   display: flex;
+   flex-flow: column;
+  }
+
+  .hero-contact_card-left-content p{
+   color: var(--text-secondary);
+  }
+
+  .form-card-content {
+   display: flex;
+   flex-direction: column;
+  }
+
+  /* Benefits Pills */
+  .benefits-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .benefits-list > p {
+    color: var(--text-primary);
+  }
+
+  .benefit-pill {
+    background: #01103214;
+    color: var(--text-primary, #0f172a);
+    padding: 6px 16px 6px 6px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .benefit-pill .check-circle {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .form-wrapper-col {
+    width: 100%;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 991px) {
+    .contact-cards-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .contact-form-section {
+      flex-direction: column;
+      gap: 40px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .contact-cards-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+{% end_scope_css %}
+</style>
+{% end_require_css %}
+
+<section class="section">
+  <div class="container">
+    
+    <!-- Top Contact Cards -->
+    <div class="contact-cards-grid mb-24">
+      
+      {% for item in module.contact_card %}
+        
+        <!-- Dynamic Link Setup -->
+        {% set href_link = "" %}
+        {% set display_text = "" %}
+        {% set link_target = "" %}
+        
+        {% if item.contact_option == 'email' %}
+          {% set href_link = "mailto:" ~ item.email_field %}
+          {% set display_text = item.email_field %}
+        {% elif item.contact_option == 'phone' %}
+          {# Clean the phone number for the tel: link #}
+          {% set href_link = "tel:" ~ item.phone_number|replace(' ', '')|replace('(', '')|replace(')', '')|replace('-', '') %}
+          {% set display_text = item.phone_number %}
+        {% elif item.contact_option == 'address' %}
+          {% set href_link = "https://www.google.com/maps/search/?api=1&query=" ~ item.address|urlencode %}
+          {% set display_text = item.address %}
+          {% set link_target = 'target="_blank"' %}
+        {% endif %}
+
+        <div class="contact-card p-32">
+          
+          <div class="icon-box mb-40">
+               {{ item.svg_icon }}
+          </div>
+          
+          <h6 class="mb-16">{{ item.contact_title }}</h6>
+          <p class="body mb-32">{{ item.contact_description }}</p>
+          
+          <a href="{{ href_link }}" class="contact-link" {{ link_target }}>
+            <p class="body">{{ display_text }}</p>
+          </a>
+          
+        </div>
+      {% endfor %}
+
+    </div>
+
+    <!-- Bottom Form Section -->
+    <div class="contact-form-section p-24 gap-24">
+      
+      <!-- Left Content -->
+      <div class="form-content-col">
+        <div class="icon-box">
+          {{ module.contact_form_card.svg_icon_box }}
+        </div>
+        <div class="form-card-content gap-36">
+          
+          <div class="hero-contact_card-left-content">
+            <h2 class="mb-20">
+              {% inline_text field="contact_form_card.card_title" value="{{ module.contact_form_card.card_title }}" %}
+            </h2>
+            <p class="body">
+              {{ module.contact_form_card.subtitle }}
+            </p>
+          </div>
+
+        <div class="benefits-list">
+          {% for item in module.contact_form_card.benefit_pill %}
+            <span class="benefit-pill">
+              <span class="check-circle">
+                {{ item.svg_icon }}
+              </span>
+              <p class="body">
+                {{ item.benefit_text }}
+              </p> 
+            </span>
+          {% endfor %}
+        </div>
+      </div>
+</div>
+
+      <!-- Right Form Wrapper -->
+      <div class="form-wrapper-col">
+        <div class="form-placeholder pt-20">
+          <div class="fh-form-wrap">
+            {% form
+              form_to_use="{{ module.contact_form_card.form_field.form_id }}"
+              response_response_type="{{ module.contact_form_card.form_field.response_type }}"
+              response_message="{{ module.contact_form_card.form_field.message }}"
+              response_redirect_id="{{ module.contact_form_card.form_field.redirect_id }}"
+              response_redirect_url="{{module.contact_form_card.form_field.redirect_url}}"
+              gotowebinar_webinar_key="{{ module.contact_form_card.form_field.gotowebinar_webinar_key }}"
+            %}
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+{% require_js %}
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    if (typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined") {
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Create a timeline to chain the animations perfectly
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: ".section", // Start animating when the section enters the viewport
+          start: "top 80%"
+        }
+      });
+
+      // 1. Cards appear slightly from the bottom, slower and more staggered
+      tl.fromTo(".contact-card", 
+        { 
+          opacity: 0, 
+          y: 40 
+        }, 
+        { 
+          opacity: 1, 
+          y: 0, 
+          duration: 1.2, // Increased duration for a slower, smoother entrance
+          stagger: 0.25, // Slightly increased gap between each card appearing
+          ease: "power2.out" 
+        }
+      )
+      // 2. Form section slides in from the left immediately after the cards finish
+      .fromTo(".contact-form-section", 
+        { 
+          opacity: 0, 
+          x: -100 // Starts 100px to the left
+        }, 
+        { 
+          opacity: 1, 
+          x: 0, 
+          duration: 0.8, 
+          ease: "power3.out" 
+        }
+      );
+    }
+  });
+</script>
+{% end_require_js %}
