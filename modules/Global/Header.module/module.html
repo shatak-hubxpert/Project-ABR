@@ -190,6 +190,42 @@
     background: var(--gradient-3) !important;
   }
 
+  /* Keep the desktop header CTA more compact than the global button. */
+  .site-header .header-cta > .p-btn {
+    box-sizing: border-box;
+    height: 46px !important;
+    min-height: 0 !important;
+    max-height: 46px !important;
+    padding: 3px 32px 3px 8px !important;
+    font-size: 14px !important;
+  }
+
+  .site-header .header-cta > .p-btn:not(:hover) .btn-bg-fill {
+    top: 3px;
+    width: 40px;
+    min-width: 40px;
+    height: 40px;
+    aspect-ratio: 1 / 1;
+  }
+
+  /* Match the icon viewport to the 1:1 white block. */
+  .site-header .header-cta > .p-btn:not(:hover) .btn-icon-left {
+    width: 40px;
+    min-width: 40px;
+    max-width: 40px;
+    height: 40px;
+  }
+
+  .site-header .header-cta > .p-btn:hover {
+    height: 46px !important;
+    padding: 3px 24px 3px 32px !important;
+  }
+
+  .site-header .header-cta > .p-btn:hover .btn-bg-fill {
+    top: 2px;
+    height: calc(100% - 4px);
+  }
+
   /* Hide Mobile Elements on Desktop */
   .nav_menu-btn {
     display: none;
@@ -401,7 +437,7 @@
         </div>
 
         <!-- Desktop CTA Button -->
-        <div class="btn-wrap hide-tablet">
+        <div class="btn-wrap header-cta hide-tablet">
           {% if module.cta.button_text %}
             {{ btn_macros.animated_button(module.cta.button_text, module.cta.button_link.url.href) }}
           {% endif %}

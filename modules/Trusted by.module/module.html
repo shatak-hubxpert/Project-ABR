@@ -148,13 +148,47 @@
      Desktop Footer Banner
      ================================== */
   .reviews-footer-banner {
-    background-color: var(--primary-color, #2F6BFF);
+    position: relative;
+    isolation: isolate;
+    background-image: radial-gradient(circle farthest-corner at 150% 0%, #51a2ff, #0552fc);
     border-radius: 16px;
     padding: 12px 12px 12px 32px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 24px;
+    color: #ffffff;
+    text-decoration: none;
+    box-shadow: 0 6px 14px rgba(19, 85, 255, 0.4);
+    overflow: hidden;
+    transition: box-shadow 0.35s ease;
+  }
+
+  .reviews-footer-banner::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-color: #071a42;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+  }
+
+  .reviews-footer-banner:hover,
+  .reviews-footer-banner:focus-visible {
+    color: #ffffff;
+    text-decoration: none;
+    box-shadow: 0 6px 14px rgba(7, 26, 66, 0.28);
+  }
+
+  .reviews-footer-banner:hover::before,
+  .reviews-footer-banner:focus-visible::before {
+    opacity: 1;
+  }
+
+  .reviews-footer-banner:focus-visible {
+    outline: 3px solid rgba(81, 162, 255, 0.45);
+    outline-offset: 3px;
   }
 
   .rf-banner-left {
@@ -192,9 +226,48 @@
     margin: 0;
   }
 
-  /* Override macro button text color for the blue banner */
-  .rf-banner-right .button-class { /* Replace .button-class with your macro's actual class if needed */
-    color: #ffffff !important; 
+  .rf-banner-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-shrink: 0;
+  }
+
+  .rf-banner-cta {
+    font-family: var(--secondary-font);
+    font-size: 1rem;
+    font-weight: 600;
+    color: #ffffff;
+    white-space: nowrap;
+  }
+
+  .rf-banner-icon {
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    background-color: #ffffff;
+    border-radius: 12px;
+  }
+
+  .rf-banner-icon-track {
+    display: flex;
+    gap: 32px;
+    padding-left: 16px;
+    width: max-content;
+    animation: rf-infinite-slide 2.5s linear infinite;
+  }
+
+  .rf-banner-icon img {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+  }
+
+  @keyframes rf-infinite-slide {
+    from { transform: translateX(-52px); }
+    to { transform: translateX(0); }
   }
 
   /* ==================================
@@ -327,7 +400,7 @@
     </div>
 
     <!-- Desktop Footer Banner (Hidden on Mobile) -->
-    <div class="reviews-footer-banner gsap-review-el">
+    <a class="reviews-footer-banner" href="{{ module.footer_card.link.url.href }}" aria-label="{{ module.footer_card.button_text|default('Learn more') }}">
       <div class="rf-banner-left">
         <div class="rf-avatars">
           {% for client in module.footer_card.clients %}
@@ -343,15 +416,20 @@
       </div>
 
       <div class="rf-banner-right">
-        <!-- Replaced hardcoded button with global macro -->
         {% if module.footer_card.button_text %}
-          {{ btn_macros.animated_button(module.footer_card.button_text, module.footer_card.link.url.href) }}
+          <span class="rf-banner-cta">{{ module.footer_card.button_text }}</span>
         {% endif %}
+        <span class="rf-banner-icon" aria-hidden="true">
+          <span class="rf-banner-icon-track">
+            <img src="https://cdn.prod.website-files.com/6a1dd6bce5cdeadcef336317/6a20ef4f1998cb56dd0d3f3a_83810f41f50243f20509717f1fa10ebc_button-arrows.svg" alt="">
+            <img src="https://cdn.prod.website-files.com/6a1dd6bce5cdeadcef336317/6a20ef4f1998cb56dd0d3f3a_83810f41f50243f20509717f1fa10ebc_button-arrows.svg" alt="">
+          </span>
+        </span>
       </div>
-    </div>
+    </a>
 
     <!-- Mobile Footer Button (Visible ONLY on Mobile) -->
-    <div class="reviews-mobile-footer gsap-review-el">
+    <div class="reviews-mobile-footer">
       <!-- Replaced hardcoded button with global macro -->
       {% if module.footer_card.button_text %}
         {{ btn_macros.animated_button(module.footer_card.button_text, module.footer_card.link.url.href) }}
@@ -400,7 +478,7 @@
       }
 
       /* ------------------------------------------------------------------
-         2. Staggered Elements (Eyebrow, Cards, Footer)
+         2. Staggered Elements (Eyebrow and Cards)
       ------------------------------------------------------------------ */
       gsap.fromTo(".gsap-review-el", 
         { y: 60, opacity: 0 }, 
