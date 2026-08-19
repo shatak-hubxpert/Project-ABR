@@ -38,11 +38,6 @@
     letter-spacing: -0.02em;
   }
 
-  .enterprise-header h2 span.word {
-    display: inline-block;
-    will-change: transform, filter;
-  }
-
   .enterprise-header-desc {
     margin: 24px auto 0; 
     color: var(--text-secondary);
@@ -58,36 +53,64 @@
   }
 
   .enterprise-card {
+    --line-x: 1;
+    --line-y: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
     padding: 48px 32px;
-    border-color: rgba(255, 255, 255, 0.1);
-    border-style: solid;
-    border-width: 0;
-    transition: transform 0.3s ease;
-    will-change: transform;
+    position: relative;
+    overflow: hidden;
   }
 
-  .enterprise-card:hover {
+  .enterprise-card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.3s ease;
+    will-change: transform, opacity;
+  }
+
+  .enterprise-card:hover .enterprise-card-content {
     transform: translateY(-4px);
+  }
+
+  .enterprise-card::before,
+  .enterprise-card::after {
+    content: "";
+    position: absolute;
+    pointer-events: none;
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  /* The inset ends leave a deliberate gap wherever grid lines meet. */
+  .enterprise-card::before {
+    top: 12px;
+    right: 0;
+    bottom: 12px;
+    width: 1px;
+    transform: scaleY(var(--line-y));
+    transform-origin: top;
+  }
+
+  .enterprise-card::after {
+    right: 12px;
+    bottom: 0;
+    left: 12px;
+    height: 1px;
+    transform: scaleX(var(--line-x));
+    transform-origin: left;
   }
 
   /* Desktop Borders (3 columns) */
   @media screen and (min-width: 1025px) {
-    /* Right borders for col 1 & 2 */
-    .enterprise-card:nth-child(1),
-    .enterprise-card:nth-child(2),
-    .enterprise-card:nth-child(4),
-    .enterprise-card:nth-child(5) {
-      border-right-width: 1px;
+    .enterprise-card:nth-child(3n)::before {
+      display: none;
     }
-    /* Bottom borders for top row */
-    .enterprise-card:nth-child(1),
-    .enterprise-card:nth-child(2),
-    .enterprise-card:nth-child(3) {
-      border-bottom-width: 1px;
+
+    .enterprise-card:nth-last-child(-n + 3)::after {
+      display: none;
     }
   }
 
@@ -96,13 +119,12 @@
     .enterprise-grid {
       grid-template-columns: repeat(2, 1fr);
     }
-    /* Right border for odd items (col 1) */
-    .enterprise-card:nth-child(odd) {
-      border-right-width: 1px;
+    .enterprise-card:nth-child(even)::before {
+      display: none;
     }
-    /* Bottom border for all except the last row */
-    .enterprise-card:not(:nth-last-child(-n+2)) {
-      border-bottom-width: 1px;
+
+    .enterprise-card:nth-last-child(-n + 2)::after {
+      display: none;
     }
   }
 
@@ -117,9 +139,9 @@
     .enterprise-card {
       padding: 40px 16px;
     }
-    /* Bottom border for all except the very last item */
-    .enterprise-card:not(:last-child) {
-      border-bottom-width: 1px;
+    .enterprise-card::before,
+    .enterprise-card:last-child::after {
+      display: none;
     }
   }
 
@@ -157,24 +179,36 @@
     max-width: 280px;
   }
 
-  /* ==================================
-     GSAP Initial States
-     ================================== */
-  .gsap-ent-card {
-    opacity: 0;
+  /* Only hide animated elements after JavaScript has successfully initialized. */
+  .enterprise-section.is-animated .gsap-ent-eyebrow,
+  .enterprise-section.is-animated .gsap-blur-reveal,
+  .enterprise-section.is-animated .enterprise-header-desc,
+  .enterprise-section.is-animated .enterprise-card-content {
+    visibility: hidden;
+  }
+
+  .enterprise-section.is-animated .enterprise-card {
+    --line-x: 0;
+    --line-y: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .enterprise-card-content {
+      transition: none;
+    }
   }
   {% end_scope_css %}
 </style>
 {% end_require_css %}
 
 <div class="enterprise-section-wrapper">
-  <section class="enterprise-section">
+  <section id="build-for-{{ name }}" class="enterprise-section">
     <div class="container">
       
       <!-- Section Header -->
       <div class="enterprise-header">
         <!-- Eyebrow -->
-        <div class="gsap-ent-eyebrow" style="opacity: 0;">
+        <div class="gsap-ent-eyebrow">
           {% if module.eyebrow_text %}
             {{ btn_macros.eyebrow_label(module.eyebrow_text) }}
           {% endif %}
@@ -187,7 +221,7 @@
 
         <!-- Description (Added for standardized animation support) -->
         {% if module.description %}
-          <p class="body enterprise-header-desc" style="opacity: 0;">
+          <p class="body enterprise-header-desc">
             {{ module.description }}
           </p>
         {% endif %}
@@ -197,16 +231,16 @@
       <div class="enterprise-grid">
         {% for item in module.cards %}
           <div class="enterprise-card gsap-ent-card">
-            
-            <!-- Icon Background with SVG -->
-            <div class="enterprise-icon">
-              {{ item.card_icon_svg }}
-            </div>
+            <div class="enterprise-card-content">
+              <!-- Icon Background with SVG -->
+              <div class="enterprise-icon">
+                {{ item.card_icon_svg }}
+              </div>
 
-            <!-- Content -->
-            <h4 class="enterprise-card-title">{{ item.title }}</h4>
-            <p class="body-2 enterprise-card-desc">{{ item.description }}</p>
-            
+              <!-- Content -->
+              <h4 class="enterprise-card-title">{{ item.title }}</h4>
+              <p class="body-2 enterprise-card-desc">{{ item.description }}</p>
+            </div>
           </div>
         {% endfor %}
       </div>
@@ -218,103 +252,109 @@
 <!-- GSAP Scroll Animations -->
 {% require_js %}
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
-      console.warn("GSAP missing. Animations will not load.");
-      return;
-    }
-    gsap.registerPlugin(ScrollTrigger);
+  (() => {
+    const initBuildFor = () => {
+      const section = document.getElementById("build-for-{{ name }}");
+      if (!section) return;
 
-    const section = document.querySelector(".enterprise-section");
-    if (!section) return;
-
-    /* ------------------------------------------------------------------
-       1. Eyebrow Reveal
-    ------------------------------------------------------------------ */
-    const eyebrow = section.querySelector(".gsap-ent-eyebrow");
-    if (eyebrow) {
-      gsap.fromTo(eyebrow, 
-        { opacity: 0, y: 15 }, 
-        { 
-          opacity: 1, y: 0, duration: 0.8, ease: 'power2.out',
-          scrollTrigger: { trigger: section, start: 'top 85%', once: true }
-        }
+      const animatedElements = section.querySelectorAll(
+        ".gsap-ent-eyebrow, .gsap-blur-reveal, .enterprise-header-desc, .enterprise-card-content"
       );
-    }
 
-    /* ------------------------------------------------------------------
-       2. Heading Blur Reveal
-    ------------------------------------------------------------------ */
-    const heading = section.querySelector(".gsap-blur-reveal");
-    if (heading) {
-      const words = heading.textContent.trim().split(/\s+/);
-      heading.innerHTML = words.map(w => `<span class="word">${w}</span>`).join(' ');
-      const wordSpans = heading.querySelectorAll('.word');
+      const showContent = () => {
+        section.classList.remove("is-animated");
+        animatedElements.forEach((element) => element.removeAttribute("style"));
+      };
 
-      gsap.set(wordSpans, { opacity: 0, filter: 'blur(10px)', y: 8 });
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        showContent();
+        return;
+      }
 
-      ScrollTrigger.create({
-        trigger: heading,
-        start: 'top 85%',
-        once: true,
-        onEnter() {
-          gsap.to(wordSpans, {
-            opacity: 1,
-            filter: 'blur(0px)',
-            y: 0,
-            duration: 0.8,
-            stagger: 0.1,
-            ease: 'sine.out'
-          });
-        }
-      });
-    }
+      if (typeof gsap === "undefined" || typeof ScrollTrigger === "undefined") {
+        console.warn("GSAP missing. Animations will not load.");
+        showContent();
+        return;
+      }
+      gsap.registerPlugin(ScrollTrigger);
+      section.classList.add("is-animated");
 
-    /* ------------------------------------------------------------------
-       3. Description Fade
-    ------------------------------------------------------------------ */
-    const headerDesc = section.querySelector(".enterprise-header-desc");
-    if (headerDesc) {
-      gsap.fromTo(headerDesc, 
-        { opacity: 0, y: 15 }, 
-        { 
-          opacity: 1, 
-          y: 0, 
-          duration: 0.8, 
-          delay: 0.3, // Waits slightly for the title to finish revealing
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: section.querySelector('.enterprise-header'),
-            start: 'top 85%',
-            once: true
-          }
-        }
-      );
-    }
+      const eyebrow = section.querySelector(".gsap-ent-eyebrow");
+      const heading = section.querySelector(".gsap-blur-reveal");
+      const headerDesc = section.querySelector(".enterprise-header-desc");
+      const cards = section.querySelectorAll(".gsap-ent-card");
+      const cardContents = section.querySelectorAll(".enterprise-card-content");
 
-    /* ------------------------------------------------------------------
-       4. Cards Grid (Staggered fade in & slide up)
-    ------------------------------------------------------------------ */
-    gsap.fromTo(".gsap-ent-card", 
-      { 
-        y: 40, 
-        opacity: 0 
-      }, 
-      { 
-        y: 0, 
-        opacity: 1, 
-        duration: 0.8, 
-        stagger: 0.1, 
-        delay: 0.4, // Delays card entrance so header reveals first
-        ease: "power3.out",
+      gsap.set(animatedElements, { autoAlpha: 0 });
+
+      const headerTimeline = gsap.timeline({
+        defaults: { duration: 0.8, ease: "power3.out" },
         scrollTrigger: {
-          trigger: ".enterprise-grid",
-          start: "top 85%",
+          trigger: section.querySelector(".enterprise-header"),
+          start: "top 82%",
           once: true
         }
-      }
-    );
+      });
 
-  });
+      if (eyebrow) headerTimeline.fromTo(eyebrow, { y: 24 }, { autoAlpha: 1, y: 0 });
+      if (heading) {
+        headerTimeline.fromTo(
+          heading,
+          { y: 48, filter: "blur(10px)" },
+          { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 1 },
+          "-=0.55"
+        );
+      }
+      if (headerDesc) {
+        headerTimeline.fromTo(
+          headerDesc,
+          { y: 32 },
+          { autoAlpha: 1, y: 0 },
+          "-=0.65"
+        );
+      }
+
+      if (cards.length) {
+        const gridTimeline = gsap.timeline({
+          scrollTrigger: {
+            trigger: section.querySelector(".enterprise-grid"),
+            start: "top 82%",
+            once: true
+          }
+        });
+
+        gridTimeline
+          .to(cards, {
+            "--line-y": 1,
+            duration: 0.9,
+            stagger: 0.08,
+            ease: "power2.out"
+          })
+          .to(cards, {
+            "--line-x": 1,
+            duration: 0.9,
+            stagger: 0.08,
+            ease: "power2.out"
+          }, "-=0.65")
+          .fromTo(cardContents, (index) => {
+            const columns = window.innerWidth > 1024 ? 3 : window.innerWidth >= 768 ? 2 : 1;
+            const row = Math.floor(index / columns);
+            return { autoAlpha: 0, y: row % 2 === 0 ? -64 : 64 };
+          }, {
+            autoAlpha: 1,
+            y: 0,
+            duration: 0.85,
+            stagger: 0.1,
+            ease: "power3.out"
+          }, "-=0.55");
+      }
+    };
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initBuildFor, { once: true });
+    } else {
+      initBuildFor();
+    }
+  })();
 </script>
 {% end_require_js %}
