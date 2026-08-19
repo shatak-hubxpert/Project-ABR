@@ -495,7 +495,9 @@
 
         if (!reduceMotion) {
           gsap.set(avatars, {
-            x: index => (avatars.length - 1 - index) * overlapDistance,
+            // Stack every avatar beneath the first avatar. Animating back to
+            // x: 0 makes the group expand toward the right.
+            x: index => index * -overlapDistance,
             opacity: 0,
             scale: 0.82
           });
@@ -519,10 +521,10 @@
               x: 0,
               opacity: 1,
               scale: 1,
-              duration: 0.7,
-              stagger: { each: 0.1, from: "end" },
+              duration: 1.2,
+              stagger: { each: 0.18, from: "end" },
               ease: "power3.out"
-            }, "-=0.08");
+            }, "+=0.5");
         }
       }
 
