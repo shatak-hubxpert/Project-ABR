@@ -32,6 +32,7 @@
   display: block;
   border: 2px solid var(--bg-primary);
   margin-left: -12px;
+  will-change: transform, opacity;
 }
 
 .guidance-avatar:first-child {
@@ -69,6 +70,12 @@
 
 .guidance-btn:hover {
   background-color: #011032;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .guidance-avatar {
+    will-change: auto;
+  }
 }
 
 @media screen and (max-width: 767px) {

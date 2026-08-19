@@ -38,25 +38,71 @@
     if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
       gsap.registerPlugin(ScrollTrigger);
 
-      const card = document.querySelector(".guidance-card");
-      if (!card) return;
+      document.querySelectorAll(".guidance-card").forEach(card => {
+        if (card.dataset.guidanceInitialized === "true") return;
+        card.dataset.guidanceInitialized = "true";
 
-      gsap.fromTo(card,
-        { y: 30, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.8,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: card,
-            start: "top 85%",
-            once: true
+        gsap.fromTo(card,
+          { y: 30, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.8,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: card,
+              start: "top 85%",
+              once: true
+            }
           }
+        );
+
+        const avatars = Array.from(card.querySelectorAll(".guidance-avatar"));
+        const avatarGroup = card.querySelector(".guidance-avatars");
+        const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+        if (avatars.length && avatarGroup && !reduceMotion) {
+          const overlapDistance = 30;
+          const lastAvatar = avatars[avatars.length - 1];
+
+          gsap.set(avatars, {
+            // Stack every avatar beneath the first avatar so the group opens
+            // toward the right when each image returns to its natural position.
+            x: index => index * -overlapDistance,
+            opacity: 0,
+            scale: 0.82
+          });
+          gsap.set(lastAvatar, { opacity: 1 });
+
+          const avatarTimeline = gsap.timeline({
+            scrollTrigger: {
+              trigger: avatarGroup,
+              start: "top 85%",
+              once: true
+            }
+          });
+
+          avatarTimeline
+            .to(lastAvatar, {
+              scale: 1,
+              duration: 0.35,
+              ease: "back.out(1.7)"
+            })
+            .to(avatars, {
+              x: 0,
+              opacity: 1,
+              scale: 1,
+              duration: 1.2,
+              stagger: { each: 0.18, from: "end" },
+              ease: "power3.out"
+            }, "+=0.5");
         }
-      );
+      });
     } else {
       console.warn("GSAP or ScrollTrigger is missing. Make sure the CDNs are added to base.html.");
+      document.querySelectorAll(".gsap-guidance-el").forEach(element => {
+        element.style.opacity = "1";
+      });
     }
   });
 </script>
