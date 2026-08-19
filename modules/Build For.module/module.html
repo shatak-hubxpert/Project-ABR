@@ -183,17 +183,12 @@
   .enterprise-section.is-animated .gsap-ent-eyebrow,
   .enterprise-section.is-animated .gsap-blur-reveal,
   .enterprise-section.is-animated .enterprise-header-desc,
-  .enterprise-section.is-animated .enterprise-card-content {
+  .enterprise-section.is-animated .gsap-ent-card {
     visibility: hidden;
   }
 
-  .enterprise-section.is-animated .enterprise-card {
-    --line-x: 0;
-    --line-y: 0;
-  }
-
   @media (prefers-reduced-motion: reduce) {
-    .enterprise-card-content {
+    .enterprise-card {
       transition: none;
     }
   }
@@ -258,7 +253,7 @@
       if (!section) return;
 
       const animatedElements = section.querySelectorAll(
-        ".gsap-ent-eyebrow, .gsap-blur-reveal, .enterprise-header-desc, .enterprise-card-content"
+        ".gsap-ent-eyebrow, .gsap-blur-reveal, .enterprise-header-desc, .gsap-ent-card"
       );
 
       const showContent = () => {
@@ -283,7 +278,6 @@
       const heading = section.querySelector(".gsap-blur-reveal");
       const headerDesc = section.querySelector(".enterprise-header-desc");
       const cards = section.querySelectorAll(".gsap-ent-card");
-      const cardContents = section.querySelectorAll(".enterprise-card-content");
 
       gsap.set(animatedElements, { autoAlpha: 0 });
 
@@ -315,38 +309,24 @@
       }
 
       if (cards.length) {
-        const gridTimeline = gsap.timeline({
-          scrollTrigger: {
-            trigger: section.querySelector(".enterprise-grid"),
-            start: "top 82%",
-            once: true
-          }
-        });
-
-        gridTimeline
-          .to(cards, {
-            "--line-y": 1,
-            duration: 0.9,
-            stagger: 0.08,
-            ease: "power2.out"
-          })
-          .to(cards, {
-            "--line-x": 1,
-            duration: 0.9,
-            stagger: 0.08,
-            ease: "power2.out"
-          }, "-=0.65")
-          .fromTo(cardContents, (index) => {
-            const columns = window.innerWidth > 1024 ? 3 : window.innerWidth >= 768 ? 2 : 1;
-            const row = Math.floor(index / columns);
-            return { autoAlpha: 0, y: row % 2 === 0 ? -64 : 64 };
-          }, {
+        gsap.fromTo(
+          cards,
+          { autoAlpha: 0, y: 72, scale: 0.92, filter: "blur(8px)" },
+          {
             autoAlpha: 1,
             y: 0,
-            duration: 0.85,
-            stagger: 0.1,
-            ease: "power3.out"
-          }, "-=0.55");
+            scale: 1,
+            filter: "blur(0px)",
+            duration: 1,
+            stagger: 0.14,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: section.querySelector(".enterprise-grid"),
+              start: "top 82%",
+              once: true
+            }
+          }
+        );
       }
     };
 
