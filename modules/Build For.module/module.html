@@ -53,36 +53,64 @@
   }
 
   .enterprise-card {
+    --line-x: 1;
+    --line-y: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
     padding: 48px 32px;
-    border-color: rgba(255, 255, 255, 0.1);
-    border-style: solid;
-    border-width: 0;
-    transition: transform 0.3s ease;
-    will-change: transform;
+    position: relative;
+    overflow: hidden;
   }
 
-  .enterprise-card:hover {
+  .enterprise-card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.3s ease;
+    will-change: transform, opacity;
+  }
+
+  .enterprise-card:hover .enterprise-card-content {
     transform: translateY(-4px);
+  }
+
+  .enterprise-card::before,
+  .enterprise-card::after {
+    content: "";
+    position: absolute;
+    pointer-events: none;
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  /* The inset ends leave a deliberate gap wherever grid lines meet. */
+  .enterprise-card::before {
+    top: 12px;
+    right: 0;
+    bottom: 12px;
+    width: 1px;
+    transform: scaleY(var(--line-y));
+    transform-origin: top;
+  }
+
+  .enterprise-card::after {
+    right: 12px;
+    bottom: 0;
+    left: 12px;
+    height: 1px;
+    transform: scaleX(var(--line-x));
+    transform-origin: left;
   }
 
   /* Desktop Borders (3 columns) */
   @media screen and (min-width: 1025px) {
-    /* Right borders for col 1 & 2 */
-    .enterprise-card:nth-child(1),
-    .enterprise-card:nth-child(2),
-    .enterprise-card:nth-child(4),
-    .enterprise-card:nth-child(5) {
-      border-right-width: 1px;
+    .enterprise-card:nth-child(3n)::before {
+      display: none;
     }
-    /* Bottom borders for top row */
-    .enterprise-card:nth-child(1),
-    .enterprise-card:nth-child(2),
-    .enterprise-card:nth-child(3) {
-      border-bottom-width: 1px;
+
+    .enterprise-card:nth-last-child(-n + 3)::after {
+      display: none;
     }
   }
 
@@ -91,13 +119,12 @@
     .enterprise-grid {
       grid-template-columns: repeat(2, 1fr);
     }
-    /* Right border for odd items (col 1) */
-    .enterprise-card:nth-child(odd) {
-      border-right-width: 1px;
+    .enterprise-card:nth-child(even)::before {
+      display: none;
     }
-    /* Bottom border for all except the last row */
-    .enterprise-card:not(:nth-last-child(-n+2)) {
-      border-bottom-width: 1px;
+
+    .enterprise-card:nth-last-child(-n + 2)::after {
+      display: none;
     }
   }
 
@@ -112,9 +139,9 @@
     .enterprise-card {
       padding: 40px 16px;
     }
-    /* Bottom border for all except the very last item */
-    .enterprise-card:not(:last-child) {
-      border-bottom-width: 1px;
+    .enterprise-card::before,
+    .enterprise-card:last-child::after {
+      display: none;
     }
   }
 
@@ -199,16 +226,16 @@
       <div class="enterprise-grid">
         {% for item in module.cards %}
           <div class="enterprise-card gsap-ent-card">
-            
-            <!-- Icon Background with SVG -->
-            <div class="enterprise-icon">
-              {{ item.card_icon_svg }}
-            </div>
+            <div class="enterprise-card-content">
+              <!-- Icon Background with SVG -->
+              <div class="enterprise-icon">
+                {{ item.card_icon_svg }}
+              </div>
 
-            <!-- Content -->
-            <h4 class="enterprise-card-title">{{ item.title }}</h4>
-            <p class="body-2 enterprise-card-desc">{{ item.description }}</p>
-            
+              <!-- Content -->
+              <h4 class="enterprise-card-title">{{ item.title }}</h4>
+              <p class="body-2 enterprise-card-desc">{{ item.description }}</p>
+            </div>
           </div>
         {% endfor %}
       </div>
