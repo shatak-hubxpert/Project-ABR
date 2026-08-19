@@ -86,18 +86,18 @@
 
   /* The inset ends leave a deliberate gap wherever grid lines meet. */
   .enterprise-card::before {
-    top: 24px;
+    top: 12px;
     right: 0;
-    bottom: 24px;
+    bottom: 12px;
     width: 1px;
     transform: scaleY(var(--line-y));
     transform-origin: top;
   }
 
   .enterprise-card::after {
-    right: 24px;
+    right: 12px;
     bottom: 0;
-    left: 24px;
+    left: 12px;
     height: 1px;
     transform: scaleX(var(--line-x));
     transform-origin: left;
@@ -183,17 +183,12 @@
   .enterprise-section.is-animated .gsap-ent-eyebrow,
   .enterprise-section.is-animated .gsap-blur-reveal,
   .enterprise-section.is-animated .enterprise-header-desc,
-  .enterprise-section.is-animated .enterprise-card-content {
+  .enterprise-section.is-animated .gsap-ent-card {
     visibility: hidden;
   }
 
-  .enterprise-section.is-animated .enterprise-card {
-    --line-x: 0;
-    --line-y: 0;
-  }
-
   @media (prefers-reduced-motion: reduce) {
-    .enterprise-card-content {
+    .enterprise-card {
       transition: none;
     }
   }
@@ -258,7 +253,7 @@
       if (!section) return;
 
       const animatedElements = section.querySelectorAll(
-        ".gsap-ent-eyebrow, .gsap-blur-reveal, .enterprise-header-desc, .enterprise-card-content"
+        ".gsap-ent-eyebrow, .gsap-blur-reveal, .enterprise-header-desc, .gsap-ent-card"
       );
 
       const showContent = () => {
@@ -283,7 +278,6 @@
       const heading = section.querySelector(".gsap-blur-reveal");
       const headerDesc = section.querySelector(".enterprise-header-desc");
       const cards = section.querySelectorAll(".gsap-ent-card");
-      const cardContents = section.querySelectorAll(".enterprise-card-content");
 
       gsap.set(animatedElements, { autoAlpha: 0 });
 
@@ -315,38 +309,24 @@
       }
 
       if (cards.length) {
-        const gridTimeline = gsap.timeline({
-          scrollTrigger: {
-            trigger: section.querySelector(".enterprise-grid"),
-            start: "top 82%",
-            once: true
-          }
-        });
-
-        gridTimeline
-          .to(cards, {
-            "--line-y": 1,
-            duration: 0.9,
-            stagger: 0.08,
-            ease: "power2.out"
-          })
-          .to(cards, {
-            "--line-x": 1,
-            duration: 0.9,
-            stagger: 0.08,
-            ease: "power2.out"
-          }, "-=0.65")
-          .fromTo(cardContents, (index) => {
-            const isFirstThree = index < 3;
-            const isLastThree = index >= cardContents.length - 3;
-            return { autoAlpha: 0, y: isFirstThree ? 50 : isLastThree ? -50 : 0 };
-          }, {
+        gsap.fromTo(
+          cards,
+          { autoAlpha: 0, y: 72, scale: 0.92, filter: "blur(8px)" },
+          {
             autoAlpha: 1,
             y: 0,
-            duration: 0.85,
-            stagger: 0.1,
-            ease: "power3.out"
-          }, "-=0.55");
+            scale: 1,
+            filter: "blur(0px)",
+            duration: 1,
+            stagger: 0.14,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: section.querySelector(".enterprise-grid"),
+              start: "top 82%",
+              once: true
+            }
+          }
+        );
       }
     };
 
